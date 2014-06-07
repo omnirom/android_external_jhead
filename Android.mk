@@ -28,7 +28,11 @@ LOCAL_SRC_FILES:= \
 	jpgfile.c \
 	makernote.c
 
+ifeq ($(CAMERA_HAL_REQUIRES_LIBEXIF),true)
+LOCAL_MODULE := libexif
+else
 LOCAL_MODULE := libjhead
+endif
 
 LOCAL_SHARED_LIBRARIES := \
 	libcutils \
@@ -50,14 +54,19 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_SRC_FILES:= \
 	main.c
 
+ifeq ($(CAMERA_HAL_REQUIRES_LIBEXIF),true)
+LOCAL_MODULE := libexif_jni
+LOCAL_SHARED_LIBRARIES := libexif
+else
 LOCAL_MODULE := libjhead_jni
+LOCAL_SHARED_LIBRARIES := libjhead
+endif
 
-LOCAL_SHARED_LIBRARIES := \
+LOCAL_SHARED_LIBRARIES += \
 	libnativehelper \
 	libcutils \
 	libutils \
-	liblog \
-	libjhead
+	liblog
 
 include $(BUILD_SHARED_LIBRARY)
 
